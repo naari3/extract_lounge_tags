@@ -1,7 +1,32 @@
 use std::collections::{HashMap, HashSet};
 use unicode_segmentation::UnicodeSegmentation;
 
-pub fn extract_tags(names: Vec<String>) -> HashSet<String> {
+/// Extract mk8dx lounge tags from given player names.
+/// # Arguments
+/// * `names` - A slice of player names.
+/// # Returns
+/// A HashSet of extracted tags.
+/// # Example
+/// ```
+/// use mk8dx_lounge_tag_extractor::extract_tags;
+/// let names = vec![
+///    "AA Cynda",
+///    "AA Dugo",
+///    "BE naari",
+///    "BE",
+///    "あいしてる",
+///    "あいうえお",
+///    "Saru FM",
+///    "ぱーぷる FM",
+///    "X",
+///    "X",
+///    "RR★",
+///    "RR",
+/// ];
+/// let tags = extract_tags(&names);
+/// assert_eq!(tags, HashSet::from_iter(vec!["AA", "BE", "あい", "FM", "X", "RR"].iter().map(|s| s.to_string())));
+/// ```
+pub fn extract_tags(names: &[String]) -> HashSet<String> {
     let mut checked_map: HashMap<usize, String> = HashMap::new();
 
     check_prefix_suffix(&names, &mut checked_map, true);
@@ -118,7 +143,8 @@ mod tests_extract_tag {
     use super::*;
 
     fn assert_eq_tags(names: Vec<&str>, mut right: Vec<&str>) {
-        let tags = extract_tags(names.iter().map(|s| s.to_string()).collect());
+        let names: Vec<String> = names.iter().map(|s| s.to_string()).collect();
+        let tags = extract_tags(&names);
         right.sort();
         assert_eq!(
             tags,
