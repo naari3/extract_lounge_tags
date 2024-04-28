@@ -1,7 +1,10 @@
 [package]
 name = "mk8dx_lounge_tag_extractor"
+license = "MIT"
 version = "0.0.1"
 edition = "2021"
+authors = ["naari3 <naari.named@gmail.com>"]
+description = "Extract mk8dx lounge tags from given player names."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
