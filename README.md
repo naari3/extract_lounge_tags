@@ -1,5 +1,8 @@
 # mk8dx_lounge_tag_extractor
 
+[![mk8dx_lounge_tag_extractor at crates.io](https://img.shields.io/crates/v/mk8dx_lounge_tag_extractor.svg)](https://crates.io/crates/mk8dx_lounge_tag_extractor)
+[![mk8dx_lounge_tag_extractor at docs.rs](https://docs.rs/mk8dx_lounge_tag_extractor/badge.svg)](https://docs.rs/mk8dx_lounge_tag_extractor)
+
 ## Example
 
 ```rust
