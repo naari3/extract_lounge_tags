@@ -1,7 +1,7 @@
 [package]
 name = "mk8dx_lounge_tag_extractor"
 license = "MIT"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 authors = ["naari3 <naari.named@gmail.com>"]
 repository = "https://github.com/naari3/mk8dx_lounge_tag_extractor"
