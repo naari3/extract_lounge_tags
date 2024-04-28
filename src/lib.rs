@@ -9,6 +9,8 @@ use unicode_segmentation::UnicodeSegmentation;
 /// # Example
 /// ```
 /// use mk8dx_lounge_tag_extractor::extract_tags;
+/// use std::collections::HashSet;
+///
 /// let names = vec![
 ///    "AA Cynda",
 ///    "AA Dugo",
@@ -24,9 +26,10 @@ use unicode_segmentation::UnicodeSegmentation;
 ///    "RR",
 /// ];
 /// let tags = extract_tags(&names);
+///
 /// assert_eq!(tags, HashSet::from_iter(vec!["AA", "BE", "あい", "FM", "X", "RR"].iter().map(|s| s.to_string())));
 /// ```
-pub fn extract_tags(names: &[String]) -> HashSet<String> {
+pub fn extract_tags<T: AsRef<str>>(names: &[T]) -> HashSet<String> {
     let mut checked_map: HashMap<usize, String> = HashMap::new();
 
     check_prefix_suffix(&names, &mut checked_map, true);
@@ -35,8 +38,8 @@ pub fn extract_tags(names: &[String]) -> HashSet<String> {
     checked_map.values().map(|s| s.trim().to_string()).collect()
 }
 
-fn check_prefix_suffix(
-    names: &[String],
+fn check_prefix_suffix<T: AsRef<str>>(
+    names: &[T],
     checked_map: &mut HashMap<usize, String>,
     is_prefix: bool,
 ) {
@@ -53,8 +56,8 @@ fn check_prefix_suffix(
                 if i == j || checked_set.contains(&j) || rejected_set.contains(&j) {
                     break;
                 }
-                let c = grapheme_nth(name, cursor, is_prefix);
-                let c2 = grapheme_nth(name2, cursor, is_prefix);
+                let c = grapheme_nth(name.as_ref(), cursor, is_prefix);
+                let c2 = grapheme_nth(name2.as_ref(), cursor, is_prefix);
                 if c != c2 || (c.is_none() && c2.is_none()) {
                     if cursor == 0 {
                         rejected_set.insert(j);
@@ -62,7 +65,7 @@ fn check_prefix_suffix(
                     }
                     checked_set.insert(i);
                     checked_set.insert(j);
-                    let tag = take_tag(name, cursor, is_prefix);
+                    let tag = take_tag(name.as_ref(), cursor, is_prefix);
                     insert_check_map(checked_map, &mut suffix_tags, i, j, tag, is_prefix);
                     cursor = 0;
                     break;
@@ -143,7 +146,6 @@ mod tests_extract_tag {
     use super::*;
 
     fn assert_eq_tags(names: Vec<&str>, mut right: Vec<&str>) {
-        let names: Vec<String> = names.iter().map(|s| s.to_string()).collect();
         let tags = extract_tags(&names);
         right.sort();
         assert_eq!(
